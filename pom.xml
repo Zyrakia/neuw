@@ -15,5 +15,10 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.mozilla</groupId>
+			<artifactId>rhino-runtime</artifactId>
+			<version>1.7.15</version>
+		</dependency>
 	</dependencies>
 </project>
