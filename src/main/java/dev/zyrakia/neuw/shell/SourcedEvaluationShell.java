@@ -1,4 +1,4 @@
-package dev.zyrakia.shell;
+package dev.zyrakia.neuw.shell;
 
 /**
  * Represents an {@link EvaluationShell} that allows for source attachment to expressions.

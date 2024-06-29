@@ -1,4 +1,4 @@
-package dev.zyrakia.shell;
+package dev.zyrakia.neuw.shell;
 
 /**
  * Represents a shell that can evaluate an arbitrary expressions within templates.

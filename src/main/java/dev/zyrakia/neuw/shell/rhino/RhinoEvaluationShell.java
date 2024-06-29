@@ -1,6 +1,6 @@
-package dev.zyrakia.shell.rhino;
+package dev.zyrakia.neuw.shell.rhino;
 
-import dev.zyrakia.shell.SourcedEvaluationShell;
+import dev.zyrakia.neuw.shell.SourcedEvaluationShell;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
@@ -34,7 +34,7 @@ public class RhinoEvaluationShell implements SourcedEvaluationShell {
 			expressionScope.setPrototype(this.sharedScope);
 			expressionScope.setParentScope(null);
 
-			return cx.evaluateString(expressionScope, expression, source, 1, null);
+			return cx.evaluateString(expressionScope, expression, source, 0, null);
 		}
 	}
 

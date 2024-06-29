@@ -1,4 +1,4 @@
-package dev.zyrakia.shell;
+package dev.zyrakia.neuw.shell;
 
 import java.util.HashMap;
 
