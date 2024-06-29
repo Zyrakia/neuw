@@ -7,7 +7,6 @@ import java.util.HashMap;
  */
 public interface EvaluationShellFactory {
 
-
 	/**
 	 * Creates a new evaluation shell with the given variables.
 	 *
@@ -24,4 +23,5 @@ public interface EvaluationShellFactory {
 	default EvaluationShell make() {
 		return make(new HashMap<>());
 	}
+
 }
