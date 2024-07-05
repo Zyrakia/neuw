@@ -29,7 +29,7 @@ public class VariableType<T> {
 	/**
 	 * The rules that describe this variable type.
 	 */
-	private List<VariableTypeRule<T>> rules = new ArrayList<>();
+	private final List<VariableTypeRule<T>> rules = new ArrayList<>();
 
 	/**
 	 * Creates a new variable type with the given base type.
