@@ -1,6 +1,6 @@
-package dev.zyrakia.neuw.shell.rhino;
+package dev.zyrakia.neuw.evaluation.rhino;
 
-import dev.zyrakia.neuw.shell.EvaluationShellFactory;
+import dev.zyrakia.neuw.evaluation.EvaluationShellFactory;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.ScriptableObject;
 

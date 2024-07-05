@@ -1,8 +1,5 @@
 package dev.zyrakia.neuw.evaluation;
 
-import dev.zyrakia.neuw.shell.EvaluationShell;
-import dev.zyrakia.neuw.shell.SourcedEvaluationShell;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,7 +9,7 @@ import java.util.regex.Pattern;
  * A search will be performed for any template expressions and each will be evaluated if found. The result of the
  * expression will then be used to replace the text of the expression that was evaluated.
  */
-public class TemplateContentEvaluator {
+public class ContentEvaluator {
 
 	/**
 	 * Represents the pattern used to search for expressions.
@@ -30,7 +27,7 @@ public class TemplateContentEvaluator {
 	 * @param expressionPattern the pattern used to search for expressions within content
 	 * @param shell             the shell used to evaluate any found expressions
 	 */
-	public TemplateContentEvaluator(Pattern expressionPattern, EvaluationShell shell) {
+	public ContentEvaluator(Pattern expressionPattern, EvaluationShell shell) {
 		this.expressionPattern = expressionPattern;
 		this.shell = shell;
 	}
