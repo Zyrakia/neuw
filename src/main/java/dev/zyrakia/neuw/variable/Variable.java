@@ -27,11 +27,6 @@ public class Variable<T> {
 	private String description;
 
 	/**
-	 * Represents the default value of the variable.
-	 */
-	private T defaultValue;
-
-	/**
 	 * Represents whether this variable is required or not.
 	 */
 	private boolean required;
@@ -44,48 +39,42 @@ public class Variable<T> {
 	/**
 	 * Creates a new variable with the given properties.
 	 *
-	 * @param type         the type of the variable
-	 * @param name         the name of the variable
-	 * @param description  the description of the variable
-	 * @param defaultValue the default value of the variable
-	 * @param required     whether the variable is required
+	 * @param type        the type of the variable
+	 * @param name        the name of the variable
+	 * @param description the description of the variable
+	 * @param required    whether the variable is required
 	 */
-	private Variable(VariableType<T> type, String name, String description, T defaultValue, boolean required) {
+	private Variable(VariableType<T> type, String name, String description, boolean required) {
 		this.type = type;
 		this.name = name;
 		this.description = description;
-		this.defaultValue = defaultValue;
 		this.required = required;
 	}
 
 	/**
-	 * Creates a new variable that has no meta, is not required and no default value.
+	 * Creates a new variable that has no meta, is not required.
 	 *
 	 * @param type the type of the variable
 	 */
 	private Variable(VariableType<T> type) {
-		this(type, "", "", null, false);
+		this(type, "", "", false);
 	}
 
 	/**
 	 * Evaluates the current value of this variable.
-	 * <p>
-	 * If no value, or an invalid value, was set for this variable, the default value will be used
 	 *
 	 * @return the value of this variable, or null if no value exists
-	 * @throws UnsetRequiredVariableException if this variable is required but no value or default value is set
-	 * @throws VariableTypeMismatchException  if the value of this variable (default or not) does not match the type
-	 *                                        this variable holds
+	 * @throws UnsetRequiredVariableException if this variable is required but no value is set
+	 * @throws VariableTypeMismatchException  if the value of this variable does not match the type this variable holds
 	 */
 	public T evaluate() throws UnsetRequiredVariableException, VariableTypeMismatchException {
-		T value = this.value == null ? this.defaultValue : this.value;
-		if (value == null) {
+		if (this.value == null) {
 			if (this.isRequired()) throw new UnsetRequiredVariableException();
 			else return null;
 		}
 
-		this.type.assertValidate(value);
-		return value;
+		this.type.assertValidate(this.value);
+		return this.value;
 	}
 
 	/**
@@ -148,11 +137,11 @@ public class Variable<T> {
 	}
 
 	/**
-	 * A utility class to build a variable.
+	 * A utility class to create a variable and modify its properties with a builder pattern.
 	 *
 	 * @param <T> the type that this variable represents
 	 */
-	public static class Builder<T> {
+	public static class New<T> {
 
 		/**
 		 * The variable that this builder is acting upon.
@@ -164,18 +153,18 @@ public class Variable<T> {
 		 *
 		 * @param type the type of the variable to build
 		 */
-		public Builder(VariableType<T> type) {
+		public New(VariableType<T> type) {
 			this.var = new Variable<>(type);
 		}
 
 		/**
-		 * Sets the default value of the variable that this builder is acting upon.
+		 * Sets the default (initial) value of the variable that this builder is acting upon.
 		 *
 		 * @param defaultValue the default value to set
 		 * @return this builder
 		 */
-		public Builder<T> withDefault(T defaultValue) {
-			this.var.defaultValue = defaultValue;
+		public New<T> withDefault(T defaultValue) {
+			this.var.value = defaultValue;
 			return this;
 		}
 
@@ -185,7 +174,7 @@ public class Variable<T> {
 		 * @param name the name to set
 		 * @return this builder
 		 */
-		public Builder<T> withName(String name) {
+		public New<T> withName(String name) {
 			this.var.name = name;
 			return this;
 		}
@@ -196,7 +185,7 @@ public class Variable<T> {
 		 * @param description the description to set
 		 * @return this builder
 		 */
-		public Builder<T> withDescription(String description) {
+		public New<T> withDescription(String description) {
 			this.var.description = description;
 			return this;
 		}
@@ -207,7 +196,7 @@ public class Variable<T> {
 		 * @param required the required status to set
 		 * @return this builder
 		 */
-		public Builder<T> required(boolean required) {
+		public New<T> required(boolean required) {
 			this.var.required = required;
 			return this;
 		}
@@ -217,7 +206,7 @@ public class Variable<T> {
 		 *
 		 * @return this builder
 		 */
-		public Builder<T> required() {
+		public New<T> required() {
 			return this.required(true);
 		}
 
