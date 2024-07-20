@@ -1,4 +1,4 @@
-package dev.zyrakia.neuw.variable.rule;
+package dev.zyrakia.neuw.variable.type.rule;
 
 /**
  * This rule passes integers constrained by a minimum and maximum value.

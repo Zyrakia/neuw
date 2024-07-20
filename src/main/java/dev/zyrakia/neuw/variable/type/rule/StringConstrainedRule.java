@@ -1,4 +1,4 @@
-package dev.zyrakia.neuw.variable.rule;
+package dev.zyrakia.neuw.variable.type.rule;
 
 /**
  * This rule passes strings that are of a given length, constrained with a minimum and maximum length.

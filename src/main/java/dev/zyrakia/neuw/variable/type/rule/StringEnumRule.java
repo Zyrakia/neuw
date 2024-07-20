@@ -1,4 +1,4 @@
-package dev.zyrakia.neuw.variable.rule;
+package dev.zyrakia.neuw.variable.type.rule;
 
 import java.util.regex.Pattern;
 

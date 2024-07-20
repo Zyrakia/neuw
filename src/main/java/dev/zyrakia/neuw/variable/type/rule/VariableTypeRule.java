@@ -1,4 +1,4 @@
-package dev.zyrakia.neuw.variable.rule;
+package dev.zyrakia.neuw.variable.type.rule;
 
 /**
  * Represents a rule that expands the criteria that a value must pass to match a variable type.
