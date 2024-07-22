@@ -2,6 +2,7 @@ package dev.zyrakia.neuw.variable;
 
 import dev.zyrakia.neuw.exception.UnsetRequiredVariableException;
 import dev.zyrakia.neuw.exception.ValidationException;
+import dev.zyrakia.neuw.util.Assert;
 import dev.zyrakia.neuw.util.ValidationResult;
 import dev.zyrakia.neuw.variable.type.VariableType;
 
@@ -28,6 +29,105 @@ public record Variable<T>(String identifier, String name, String description, bo
                 throw new IllegalArgumentException("The default value of the variable \"" + name
                         + "\" did not pass validation: \"" + defaultValueRes.message() + "\"");
         }
+    }
+
+    /**
+     * A utiltiy class to build variables.
+     */
+    public class Builder {
+        private String identifier = "";
+        private String name = "";
+        private String description = "";
+        private boolean required = false;
+        private VariableType<T> type = null;
+        private T defaultValue = null;
+
+        /**
+         * Sets the identifier, which is how the variable will be referenced by within
+         * a {@link VariableContext}.
+         * 
+         * @param identifier the identifier of the variable
+         */
+        public Variable<T>.Builder setIdentifier(String identifier) {
+            this.identifier = identifier;
+            return this;
+        }
+
+        /**
+         * Sets the name, which will mostly be user facing, and should be a readable
+         * version of the identifier.
+         * 
+         * @param name the name of the variable
+         */
+        public Variable<T>.Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        /**
+         * Sets the description, which will mostly be user facing, and should be a
+         * concise description of the indented or implemented use of the variable.
+         * 
+         * @param description the description of the variable
+         */
+        public Variable<T>.Builder setDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        /**
+         * Sets the required status, which will decide whether
+         * {@code null} evaluation of the variable will result in an error.
+         * 
+         * @param requried the required status of the variable
+         */
+        public Variable<T>.Builder setRequired(boolean required) {
+            this.required = required;
+            return this;
+        }
+
+        /**
+         * Sets the type, which is used to validate the value of a variable upon setting
+         * and again, evalution.
+         * 
+         * It is also used to define and parse {@link T} out of an arbitrary string.
+         * Similar to {@link Integer#parseInt(String)}
+         * or {@link Boolean#parseBoolean(String)}, a type has the
+         * {@link VariableType#parse(String)} method.
+         * 
+         * @param type the type of the variable
+         */
+        public Variable<T>.Builder setType(VariableType<T> type) {
+            this.type = type;
+            return this;
+        }
+
+        /**
+         * Sets the default value of this variable. The default value must match the
+         * type of this variable upon construction.
+         * 
+         * Upon evaluation, the default value will also be ignored if it does not match
+         * the type.
+         * 
+         * @param defaultValue the default value of the variable
+         */
+        public Variable<T>.Builder setDefault(T defaultValue) {
+            this.defaultValue = defaultValue;
+            return this;
+        }
+
+        /**
+         * Constructs a new variable with all the previously set properties.
+         * 
+         * @return the created variable
+         */
+        public Variable<T> build() {
+            Assert.nonNull(type, "A variable must have a type.");
+
+            return new Variable<T>(this.identifier, this.name, this.description, this.required, this.type,
+                    this.defaultValue);
+        }
+
     }
 
     /**
