@@ -34,7 +34,7 @@ public record Variable<T>(String identifier, String name, String description, bo
     /**
      * A utiltiy class to build variables.
      */
-    public class Builder {
+    public static class Builder<T> {
         private String identifier = "";
         private String name = "";
         private String description = "";
@@ -48,7 +48,7 @@ public record Variable<T>(String identifier, String name, String description, bo
          * 
          * @param identifier the identifier of the variable
          */
-        public Variable<T>.Builder setIdentifier(String identifier) {
+        public Variable.Builder<T> setIdentifier(String identifier) {
             this.identifier = identifier;
             return this;
         }
@@ -59,7 +59,7 @@ public record Variable<T>(String identifier, String name, String description, bo
          * 
          * @param name the name of the variable
          */
-        public Variable<T>.Builder setName(String name) {
+        public Variable.Builder<T> setName(String name) {
             this.name = name;
             return this;
         }
@@ -70,7 +70,7 @@ public record Variable<T>(String identifier, String name, String description, bo
          * 
          * @param description the description of the variable
          */
-        public Variable<T>.Builder setDescription(String description) {
+        public Variable.Builder<T> setDescription(String description) {
             this.description = description;
             return this;
         }
@@ -81,7 +81,7 @@ public record Variable<T>(String identifier, String name, String description, bo
          * 
          * @param requried the required status of the variable
          */
-        public Variable<T>.Builder setRequired(boolean required) {
+        public Variable.Builder<T> setRequired(boolean required) {
             this.required = required;
             return this;
         }
@@ -97,7 +97,7 @@ public record Variable<T>(String identifier, String name, String description, bo
          * 
          * @param type the type of the variable
          */
-        public Variable<T>.Builder setType(VariableType<T> type) {
+        public Variable.Builder<T> setType(VariableType<T> type) {
             this.type = type;
             return this;
         }
@@ -111,7 +111,7 @@ public record Variable<T>(String identifier, String name, String description, bo
          * 
          * @param defaultValue the default value of the variable
          */
-        public Variable<T>.Builder setDefault(T defaultValue) {
+        public Variable.Builder<T> setDefault(T defaultValue) {
             this.defaultValue = defaultValue;
             return this;
         }
