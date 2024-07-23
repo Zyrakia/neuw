@@ -8,7 +8,7 @@ import dev.zyrakia.neuw.exception.UnmatchedPathException;
  * Represents a lookup table for structure item content based on resolved
  * relative paths.
  */
-public interface StructureContentProvider {
+public interface ContentProvider {
 
 	/**
 	 * Evaluates the given path to the content at that path.

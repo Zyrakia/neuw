@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * This content provider allows for manually setting content at a given path.
  */
-public class ManualContentProvider implements StructureContentProvider {
+public class ManualContentProvider implements ContentProvider {
 
 	/**
 	 * The internal record of paths to their content.
