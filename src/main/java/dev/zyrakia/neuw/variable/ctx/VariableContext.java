@@ -7,7 +7,7 @@ import java.util.Set;
 import dev.zyrakia.neuw.exception.UnsetRequiredVariableException;
 import dev.zyrakia.neuw.exception.ValidationException;
 import dev.zyrakia.neuw.variable.Variable;
-import dev.zyrakia.neuw.variable.Variable.Instance;
+import dev.zyrakia.neuw.variable.ctx.population.ContextPopulator;
 
 /**
  * This class is responsible for housing a set of variables and evaluating them
@@ -48,9 +48,24 @@ public class VariableContext {
      * @throws ValidationException      if the given value does not match the type
      *                                  of the variable
      */
-    public void set(String identifier, Object value) throws IllegalAccessError, ValidationException {
+    public void set(String identifier, Object value) throws IllegalArgumentException, ValidationException {
         Variable<?>.Instance inst = this.getInstance(identifier);
         inst.setValue(value);
+    }
+
+    /**
+     * Sets all of the variables within this context with the given
+     * {@link ContextPopulator}.
+     * 
+     * @param populator the populator to use to set each variable
+     * @throws ValidationException if any of the values returned by the populator
+     *                             did not match the required type of the variable
+     */
+    public void populate(ContextPopulator populator) throws ValidationException {
+        for (Variable<?> descriptor : this.descriptors) {
+            Object value = populator.populate(descriptor);
+            this.getInstance(descriptor.identifier()).setValue(value);
+        }
     }
 
     /**
