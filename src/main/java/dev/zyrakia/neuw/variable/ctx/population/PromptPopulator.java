@@ -109,7 +109,11 @@ public class PromptPopulator implements ContextPopulator {
         this.writeSeparator();
 
         writer.println(
-                ansi().fg(Color.CYAN).a("$ ").fg(Color.DEFAULT).a(var.name()).a(" - ").a(var.description()).reset());
+                ansi().fg(Color.CYAN).a("$ ").fg(Color.DEFAULT).a(var.name().isEmpty() ? var.identifier() : var.name())
+                        .a(" - ")
+                        .a(var.description().isEmpty() ? ansi().fg(Color.RED).a("no description provided.").reset()
+                                : var.description())
+                        .reset());
         writer.print(ansi().a("Required: ")
                 .a(var.required() ? ansi().fg(Color.RED).a("true") : ansi().fg(Color.GREEN).a("false")).reset());
         writer.print(ansi().bold().fg(Color.CYAN).a(" • ").reset());
