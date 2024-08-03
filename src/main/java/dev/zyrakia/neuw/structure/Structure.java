@@ -3,6 +3,7 @@ package dev.zyrakia.neuw.structure;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,40 +72,52 @@ public class Structure {
      * @param evaluator the evaluator to evaluate item names and content
      * @return the write results for each item of this structure
      */
-    public Map<Path, WriteResult> write(ContentProvider provider, ContentEvaluator evaluator) {
+    public List<WriteResult> write(ContentProvider provider, ContentEvaluator evaluator) {
         Map<StructureItem, Path> absolutes = Structure.mapToAbsolutes(this.root, this.rootItems, evaluator);
-        Map<Path, WriteResult> results = new LinkedHashMap<>(absolutes.size());
+        List<WriteResult> results = new ArrayList<>(absolutes.size());
 
         for (Map.Entry<StructureItem, Path> entry : absolutes.entrySet()) {
-            StructureItem item = entry.getKey();
-            Path path = entry.getValue();
-
-            if (item.isDirectory()) {
-                boolean created = path.toFile().mkdir();
-                results.put(path, created ? WriteResult.WRITTEN : WriteResult.EXISTS);
-                continue;
-            }
-
-            try {
-                boolean created = path.toFile().createNewFile();
-                if (!created)
-                    results.put(path, WriteResult.EXISTS);
-            } catch (IOException e) {
-                results.put(path, WriteResult.ERROR);
-                continue;
-            }
-
-            try {
-                String content = evaluator.evaluate(provider.evaluate(path), item.getName());
-                Files.writeString(path, content);
-            } catch (UnmatchedPathException e) {
-                results.put(path, WriteResult.NO_CONTENT);
-            } catch (IOException e) {
-                results.put(path, WriteResult.ERROR);
-            }
+            WriteResult res = this.writeItem(entry.getKey(), entry.getValue(), provider,
+                    evaluator);
+            results.add(res);
         }
 
         return results;
+    }
+
+    /**
+     * Attempts to write the given item at the given absolute path. The content of
+     * the item, if it is a file, will be evaluated with the given provider and
+     * evaluator.
+     * 
+     * @param item      the item to be written
+     * @param path      the absolute path the item should be written at
+     * @param provider  the content provider for the item
+     * @param evaluator the evaluator for any found content for the item
+     * @return the result of the write
+     */
+    private WriteResult writeItem(StructureItem item, Path path, ContentProvider provider, ContentEvaluator evaluator) {
+        boolean created;
+        if (item.isDirectory()) {
+            created = path.toFile().mkdir();
+            return WriteResult.written(item, path, !created);
+        }
+
+        try {
+            created = path.toFile().createNewFile();
+        } catch (IOException e) {
+            return WriteResult.err(item, path);
+        }
+
+        try {
+            String content = evaluator.evaluate(provider.evaluate(this.root.relativize(path)), item.getName());
+            Files.writeString(path, content);
+            return WriteResult.written(item, path, !created);
+        } catch (UnmatchedPathException e) {
+            return WriteResult.writtenEmpty(item, path, !created);
+        } catch (IOException e) {
+            return WriteResult.err(item, path);
+        }
     }
 
 }
