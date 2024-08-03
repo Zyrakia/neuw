@@ -28,7 +28,7 @@ public record Variable<T>(String identifier, String name, String description, bo
             ValidationResult defaultValueRes = type.validate(defaultValue);
             if (!defaultValueRes.isValid())
                 throw new IllegalArgumentException("The default value of the variable \"" + name
-                        + "\" did not pass validation: \"" + defaultValueRes.message() + "\"");
+                        + "\" did not pass validation:\n" + defaultValueRes.message());
         }
     }
 
