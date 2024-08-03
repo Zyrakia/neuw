@@ -48,7 +48,7 @@ public class PromptPopulator implements ContextPopulator {
             while (true) {
                 String input = this.promptFor(var, reader);
                 if (input == null) {
-                    if (var.required())
+                    if (var.required() && var.defaultValue() == null)
                         continue;
                     else
                         break;
