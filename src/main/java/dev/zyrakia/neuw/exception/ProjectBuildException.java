@@ -10,7 +10,7 @@ public class ProjectBuildException extends Exception {
 	 *
 	 * @param message the message to explain the exception
 	 */
-	private ProjectBuildException(String message) {
+	public ProjectBuildException(String message) {
 		super(message);
 	}
 
