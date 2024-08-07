@@ -78,4 +78,22 @@ public class BoolVariableType extends VariableType<Boolean> {
         return Boolean.class.cast(value);
     }
 
+    /**
+     * Returns the currently accepted list of true words.
+     * 
+     * @return the true words list
+     */
+    public List<String> getTrueWords() {
+        return this.trueWords;
+    }
+
+    /**
+     * Returns the currently accepted list of false words.
+     * 
+     * @return the false words list
+     */
+    public List<String> getFalseWords() {
+        return this.falseWords;
+    }
+
 }

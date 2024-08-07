@@ -4,6 +4,10 @@ import static org.jline.jansi.Ansi.ansi;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.jline.jansi.Ansi.Color;
 import org.jline.reader.LineReader;
@@ -15,6 +19,8 @@ import org.jline.utils.InfoCmp.Capability;
 import dev.zyrakia.neuw.exception.ValidationException;
 import dev.zyrakia.neuw.exception.VariableFormatException;
 import dev.zyrakia.neuw.variable.Variable;
+import dev.zyrakia.neuw.variable.type.BoolVariableType;
+import dev.zyrakia.neuw.variable.type.VariableType;
 
 /**
  * This populator is used to prompt the user for each variable that is given to
@@ -103,7 +109,7 @@ public class PromptPopulator implements ContextPopulator {
         PrintWriter writer = this.terminal.writer();
 
         writer.println(
-                ansi().bold().fgRgb(255, 127, 80).a(this.center("Neuw - Instantiate Template Variables"))
+                ansi().bold().fgRgb(255, 127, 80).a("Neuw - Instantiate Template Variables")
                         .reset());
 
         this.writeSeparator();
@@ -119,6 +125,11 @@ public class PromptPopulator implements ContextPopulator {
         writer.print(ansi().bold().fg(Color.CYAN).a(" • ").reset());
         writer.println(ansi().a("Default: ").a(var.defaultValue() == null ? ansi().fg(Color.RED).a("null")
                 : ansi().fg(Color.GREEN).a(var.defaultValue())).reset());
+
+        List<String> examples = this.suggestValues(var);
+        if (examples.size() != 0)
+            writer.println(ansi().fg(Color.YELLOW).a("Example values: [").a(String.join(", ", examples))
+                    .fg(Color.YELLOW).a("]").reset());
 
         this.writeSeparator();
 
@@ -156,19 +167,6 @@ public class PromptPopulator implements ContextPopulator {
     }
 
     /**
-     * Offsets the given text so that it will be center-aligned within the current
-     * terminal size.
-     * 
-     * @param text the text to center
-     * @return the centered text
-     */
-    private String center(String text) {
-        int padding = (this.terminal.getWidth() - text.length()) / 2;
-        padding = Math.max(0, padding);
-        return " ".repeat(padding).concat(text);
-    }
-
-    /**
      * Enters the alternative screen mode, saving the current terminal contents.
      */
     private void enterAlternateScreen() {
@@ -184,6 +182,37 @@ public class PromptPopulator implements ContextPopulator {
         terminal.puts(Capability.exit_ca_mode);
         terminal.puts(Capability.keypad_local);
         terminal.flush();
+    }
+
+    /**
+     * Generates labels for logical suggested values for the given variable.
+     * 
+     * @param var the variable to generate values for
+     * @return the list of labels for generated values
+     */
+    private List<String> suggestValues(Variable<?> var) {
+        VariableType<?> type = var.type();
+
+        if (type instanceof BoolVariableType) {
+            BoolVariableType boolType = (BoolVariableType) type;
+
+            List<String> words = new ArrayList<>();
+
+            List<String> trues = boolType.getTrueWords().stream().map((v) -> {
+                return ansi().fg(Color.GREEN).a(v).reset().toString();
+            }).collect(Collectors.toList());
+
+            List<String> falses = boolType.getFalseWords().stream().map((v) -> {
+                return ansi().fg(Color.RED).a(v).reset().toString();
+            }).collect(Collectors.toList());
+
+            words.addAll(trues);
+            words.addAll(falses);
+
+            return words;
+        }
+
+        return Collections.emptyList();
     }
 
 }
