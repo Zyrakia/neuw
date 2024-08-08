@@ -62,13 +62,13 @@ public class WriteResultLogger {
                 if (res.item().isDirectory()) {
                     if (res.overwritten()) {
                         message = message.fgYellow().a("an existing directory was overwritten");
+                    }
+                } else {
+                    if (res.overwritten()) {
+                        message = message.fgRed()
+                                .a("no content was found, so a blank file overwrote an existing file");
                     } else {
-                        if (res.overwritten()) {
-                            message = message.fgRed()
-                                    .a("no content was found, so a blank file overwrote an existing file");
-                        } else {
-                            message = message.fgYellow().a("no content was found");
-                        }
+                        message = message.fgYellow().a("no content was found");
                     }
                 }
             }
