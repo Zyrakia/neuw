@@ -16,20 +16,19 @@ public class VariableFormatException extends IllegalArgumentException {
     }
 
     /**
-     * Returns a new exception that describes the parsing error between the given
-     * input and the given expected type.
+     * Returns a new exception that describes the parsing error between the
+     * given input and the given expected type.
      * 
-     * @param input        the input that was not parsed
+     * @param input the input that was not parsed
      * @param expectedType the expected type that could not be parsed out of the
-     *                     input
+     * input
      * @return the created exception
      */
-    public static VariableFormatException forExpectedType(String input, Class<?> expectedType) {
-        String name = expectedType.getCanonicalName() == null ? expectedType.getName()
-                : expectedType.getCanonicalName();
-
-        return new VariableFormatException("The given input \"" + input + "\" could not be parsed into the type \""
-                + name + ".\"");
+    public static VariableFormatException forExpectedType(String input,
+            Class<?> expectedType) {
+        return new VariableFormatException("The given input \"" + input
+                + "\" could not be parsed into the type \""
+                + expectedType.getSimpleName() + "\".");
     }
 
 }
