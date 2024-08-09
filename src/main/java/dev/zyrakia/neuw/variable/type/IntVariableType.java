@@ -9,7 +9,7 @@ public class IntVariableType extends VariableType<Integer> {
 
     public Integer parse(String value) throws VariableFormatException {
         try {
-            return Integer.parseInt(value);
+            return Integer.parseInt(value.trim());
         } catch (NumberFormatException e) {
             throw VariableFormatException.forExpectedType(value, Integer.class);
         }

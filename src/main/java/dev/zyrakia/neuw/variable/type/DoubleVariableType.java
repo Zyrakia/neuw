@@ -9,7 +9,7 @@ public class DoubleVariableType extends VariableType<Double> {
 
     public Double parse(String value) throws VariableFormatException {
         try {
-            return Double.parseDouble(value);
+            return Double.parseDouble(value.trim());
         } catch (NumberFormatException e) {
             throw VariableFormatException.forExpectedType(value, Double.class);
         }

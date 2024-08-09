@@ -64,6 +64,7 @@ public class BoolVariableType extends VariableType<Boolean> {
     public Boolean parse(String value) {
         if (!this.caseSensitive)
             value = value.toLowerCase();
+        value = value.trim();
 
         if (this.trueWords.contains(value))
             return true;
