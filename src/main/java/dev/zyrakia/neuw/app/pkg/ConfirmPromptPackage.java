@@ -52,6 +52,13 @@ public class ConfirmPromptPackage implements TerminalPackage<Boolean> {
      */
     private final boolean def;
 
+    /**
+     * Creates a new confirm prompt package with the given prompt and default
+     * value.
+     * 
+     * @param prompt the prompt to use
+     * @param def the default value of the prompt
+     */
     public ConfirmPromptPackage(String prompt, boolean def) {
         this.prompt = prompt;
         this.def = def;
@@ -59,21 +66,19 @@ public class ConfirmPromptPackage implements TerminalPackage<Boolean> {
 
     @Override
     public Boolean execute(TerminalApp app) {
+        PrintWriter writer = app.writer();
         LineReader reader = app.newReader()
                 .completer(WORD_COMPLETER)
                 .option(LineReader.Option.INSERT_TAB, false)
                 .option(LineReader.Option.COMPLETE_IN_WORD, true)
                 .option(LineReader.Option.CASE_INSENSITIVE, true)
                 .option(LineReader.Option.GROUP_PERSIST, true)
-                .option(LineReader.Option.AUTO_FRESH_LINE, true)
                 .option(LineReader.Option.ERASE_LINE_ON_FINISH, true)
                 .build();
 
         boolean res = this.def;
         while (true) {
-            this.writePrompt(app);
-            String in = reader.readLine().trim().toLowerCase();
-            app.clearLastLine();
+            String in = reader.readLine(this.getPrompt()).trim().toLowerCase();
 
             if (in.isBlank()) res = def;
             else if (CONFIRM_WORDS.contains(in)) res = true;
@@ -83,7 +88,7 @@ public class ConfirmPromptPackage implements TerminalPackage<Boolean> {
             break;
         }
 
-        this.writeResult(app, res);
+        writer.println(this.getResult(res));
         return res;
     }
 
@@ -102,42 +107,37 @@ public class ConfirmPromptPackage implements TerminalPackage<Boolean> {
     }
 
     /**
-     * Writes the prompt to the terminal, highlighting the default value for
-     * this package. This does not write a newline.
+     * Generates a prompt with the default value highlighted.
      * 
-     * @param app the app to write the prompt to
+     * @return the generated prompt
      */
-    private void writePrompt(TerminalApp app) {
-        PrintWriter writer = app.writer();
-
+    private String getPrompt() {
         String choiceIndicator = (this.def
                 ? ansi().bold().fg(Color.GREEN).a("Y").reset().a("/n")
                 : ansi().a("y/").bold().fg(Color.RED).a("N")).reset()
                         .toString();
 
-        writer.print(ansi().a(this.getPromptPrefix())
+        return ansi().a(this.getPromptPrefix())
                 .fg(Color.BLUE)
                 .a("[")
                 .a(choiceIndicator)
                 .fg(Color.BLUE)
                 .a("] ")
-                .reset());
-        writer.flush();
+                .reset()
+                .toString();
     }
 
     /**
-     * Writes the given result, alongside the prompt, to the terminal.
+     * Generaets a result for the given value, alongside the prompt.
      * 
-     * @param app the app to write the result to
      * @param res the result of the prompt
+     * @return the generated result
      */
-    private void writeResult(TerminalApp app, boolean res) {
-        PrintWriter writer = app.writer();
-        String decisionIndicator = (res ? ansi().bold().fg(Color.GREEN).a("Yes")
-                : ansi().bold().fg(Color.RED).a("No")).reset().toString();
-
-        writer.println(ansi().a(this.getPromptPrefix()).a(decisionIndicator));
-        writer.flush();
+    private String getResult(boolean res) {
+        return ansi().a(this.getPromptPrefix())
+                .a((res ? ansi().bold().fg(Color.GREEN).a("Yes")
+                        : ansi().bold().fg(Color.RED).a("No")).reset())
+                .toString();
     }
 
 }
