@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import org.jline.jansi.Ansi.Color;
 import org.jline.jansi.Ansi.Erase;
 import org.jline.reader.LineReaderBuilder;
+import org.jline.terminal.Cursor;
 import org.jline.terminal.Terminal;
 
 import dev.zyrakia.neuw.app.pkg.TerminalPackage;
@@ -38,12 +39,6 @@ public class TerminalApp {
      * Whether alternative mode is currently enabled.
      */
     private boolean altMode = false;
-
-    /**
-     * The stored title for when the application enters alternate mode with a
-     * status.
-     */
-    private String storedStatus = "";
 
     /**
      * Creates a new app on the given terminal with the given title. This will
@@ -97,62 +92,26 @@ public class TerminalApp {
     }
 
     /**
-     * Enters the alternate screen buffer.
+     * Writes an empty line to the terminal.
      */
-    public void enterAlternate() {
-        this.enterAlternate(this.status);
-    }
-
-    /**
-     * Enters the alternate screen buffer with the given status. The next exit
-     * will revert the status to the status that was applied before the
-     * alternate screen buffer was entered.
-     * 
-     * @param status the status to enter with
-     */
-    public void enterAlternate(String status) {
-        if (this.altMode) return;
-
-        this.terminal.puts(enter_ca_mode);
-        this.altMode = true;
-
-        this.storedStatus = this.status;
-        this.status = status;
-        this.writeTitle();
-    }
-
-    /**
-     * Exits the alternate screen buffer.
-     */
-    public void exitAlternate() {
-        if (!this.altMode) return;
-
-        this.terminal.puts(exit_ca_mode);
-        this.altMode = false;
-
-        this.status = storedStatus;
-        this.writeTitle();
+    public void newLine() {
+        this.writer().println();
     }
 
     /**
      * Clears all contents of the screen, except the title.
      */
     public void clear() {
-        this.writer().print(ansi().cursor(3, 1).eraseScreen(Erase.FORWARD));
+        this.setCursor(3);
+        this.writer().print(ansi().eraseScreen(Erase.FORWARD));
     }
 
     /**
      * Clears the current line completely, without leaving the current line.
      */
     public void clearLine() {
-        this.writer().print(ansi().cursorToColumn(0).eraseLine().reset());
-    }
-
-    /**
-     * Moves to the last line, while clearing it, and stays on the line.
-     */
-    public void clearLastLine() {
-        this.writer().print(ansi().cursorUpLine().eraseLine().reset());
+        this.setCursorX(1);
+        this.writer().print(ansi().eraseLine());
     }
 
     /**
@@ -163,8 +122,8 @@ public class TerminalApp {
     public void writeException(Exception e) {
         PrintWriter writer = this.writer();
 
-        writer.println(ansi().cursorToColumn(1).eraseLine());
-        writer.println(ansi().bold().fg(Color.RED).a("┌").reset());
+        this.clearLine();
+        writer.println(ansi().newline().bold().fg(Color.RED).a("┌").reset());
         writer.println(ansi().bold()
                 .fg(Color.RED)
                 .a("│ [")
@@ -188,23 +147,119 @@ public class TerminalApp {
     }
 
     /**
+     * Runs the given package in alternate mode (a separate screen buffer), and
+     * then returns to the regular screen buffer after execution.
+     * 
+     * @param <T> the result type of the package
+     * @param pkg the package to run
+     * @return the result of the package
+     */
+    public <T> T runAlternate(TerminalPackage<T> pkg) {
+        return this.runAlternate(this.status, pkg);
+    }
+
+    /**
+     * Runs the given package in alternate mode (a separate screen buffer), and
+     * then returns to the regular screen buffer after execution. While the
+     * package is executing, the given status will be applied.
+     * 
+     * @param <T> the result type of the package
+     * @param status the temporary status to apply
+     * @param pkg the package to run
+     * @return the result of the package
+     */
+    public <T> T runAlternate(String status, TerminalPackage<T> pkg) {
+        if (this.altMode)
+            throw new IllegalStateException("An alternate request was made before the previous one exited.");
+
+        int savedLine = this.getCursor().getY();
+
+        this.terminal.puts(enter_ca_mode);
+        this.altMode = true;
+
+        String storedStatus = this.status;
+        this.status = status;
+        this.writeTitle();
+
+        try {
+            return pkg.execute(this);
+        } finally {
+            this.terminal.puts(exit_ca_mode);
+            this.altMode = false;
+
+            this.status = storedStatus;
+            this.writeTitle();
+
+            this.setCursor(savedLine + 1);
+        }
+    }
+
+    /**
+     * Returns the current cursor of the terminal.
+     * 
+     * @return the cursor
+     */
+    public Cursor getCursor() {
+        return this.terminal.getCursorPosition(null);
+    }
+
+    /**
+     * Sets the cursor based on the given X and Y positions.
+     * 
+     * @param x the new x position of the cursor
+     * @param y the new y position of the cursor
+     */
+    public void setCursor(int x, int y) {
+        this.writer().print(ansi().cursor(y, x));
+        this.writer().flush();
+    }
+
+    /**
+     * Sets the cursor based on the give Y position, moving the cursor to the
+     * given line at column 0.
+     * 
+     * @param y the new y position of the cursor
+     */
+    public void setCursor(int y) {
+        this.setCursor(0, y);
+    }
+
+    /**
+     * Sets the cursor column position on the current line
+     * 
+     * @param x the new column position of the cursor
+     */
+    public void setCursorX(int x) {
+        this.writer().print(ansi().cursorToColumn(x));
+        this.writer().flush();
+    }
+
+    /**
+     * Returns whether there is currently a consumer in alternate mode. If true,
+     * any alternate enters will result in an exception.
+     * 
+     * @return whether alternate mode is occupied
+     */
+    public boolean isInAlternate() { return this.altMode; }
+
+    /**
      * Writes the current title and status to the application, overwriting the
      * current title.
      */
     private void writeTitle() {
         PrintWriter writer = this.writer();
 
-        writer.print(ansi().cursor(1, 1)
-                .eraseLine()
-                .bold()
+        this.setCursor(1);
+        this.clearLine();
+        writer.println(ansi().bold()
                 .fgRed()
                 .a(this.title)
                 .a(this.status.isBlank() ? "" : " - " + this.status)
                 .reset());
 
-        writer.println(ansi().cursor(2, 1)
-                .eraseLine()
-                .bold()
+        this.setCursor(2);
+        this.clearLine();
+        writer.println(ansi().bold()
                 .fgRed()
                 .a(this.generateSeperator())
                 .reset());
