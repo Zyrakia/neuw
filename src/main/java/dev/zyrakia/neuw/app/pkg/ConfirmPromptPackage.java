@@ -35,10 +35,10 @@ public class ConfirmPromptPackage implements TerminalPackage<Boolean> {
      */
     private static final Completer WORD_COMPLETER = (__, ___, list) -> {
         list.addAll(CONFIRM_WORDS.stream()
-                .map((v) -> new Candidate(v, v, "Confirm", "Indicates the confirmation of this prompt.", "Deny", "Confirm", true, 0))
+                .map((v) -> new Candidate(v, v, "Confirm", "Indicates the confirmation of this prompt", "Confirm", "Confirm", true, 0))
                 .collect(Collectors.toList()));
         list.addAll(DENY_WORDS.stream()
-                .map((v) -> new Candidate(v, v, "Deny", "Indicates the denial of this prompt.", "Deny", "Deny", true, 0))
+                .map((v) -> new Candidate(v, v, "Deny", "Indicates the denial of this prompt", "Deny", "Deny", true, 0))
                 .collect(Collectors.toList()));
     };
 
