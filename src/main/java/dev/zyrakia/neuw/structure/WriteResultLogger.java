@@ -45,7 +45,8 @@ public class WriteResultLogger {
      */
     public void logTree(Path rootPath) {
         PrintWriter writer = this.app.writer();
-        writer.println(ansi().fg(Color.CYAN)
+        writer.println(ansi().newline()
+                .fg(Color.CYAN)
                 .a("Project structure write results: ")
                 .reset());
         this.app.writeSeperator();
