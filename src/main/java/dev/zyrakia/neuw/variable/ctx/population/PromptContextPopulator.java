@@ -41,6 +41,9 @@ public class PromptContextPopulator implements ContextPopulator {
                         .a(": ")
                         .fg(value == null ? Color.RED : Color.DEFAULT)
                         .a(value)
+                        .a(value == var.defaultValue()
+                                ? ansi().fg(Color.CYAN).a(" (default)").reset()
+                                : "")
                         .reset());
 
         return value;
