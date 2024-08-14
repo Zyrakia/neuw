@@ -37,14 +37,13 @@ public class ProcessRunnerPackage implements TerminalPackage<Integer> {
                     v) -> pipeStandard(app, v), (v) -> pipeError(app, v));
 
             int exit = runner.waitFor();
-
             app.newLine();
-            app.run(new ContinuePromptPackage());
-
             return exit;
         } catch (IOException | InterruptedException e) {
             app.writeException(e);
             return 1;
+        } finally {
+            app.run(new ContinuePromptPackage());
         }
     }
 
