@@ -102,7 +102,7 @@ public class TerminalApp {
      * Clears all contents of the screen, except the title.
      */
     public void clear() {
-        this.setCursor(3);
+        this.setCursor(2);
         this.writer().print(ansi().eraseScreen(Erase.FORWARD));
     }
 
@@ -110,7 +110,7 @@ public class TerminalApp {
      * Clears the current line completely, without leaving the current line.
      */
     public void clearLine() {
-        this.setCursorX(1);
+        this.setCursorX(0);
         this.writer().print(ansi().eraseLine());
     }
 
@@ -190,14 +190,14 @@ public class TerminalApp {
             this.status = storedStatus;
             this.writeTitle();
 
-            this.setCursor(savedLine + 1);
+            this.setCursor(savedLine);
         }
     }
 
     /**
      * Returns the current cursor of the terminal.
      * 
-     * @return the cursor
+     * @return the cursor (0-based)
      */
     public Cursor getCursor() {
         return this.terminal.getCursorPosition(null);
@@ -206,11 +206,11 @@ public class TerminalApp {
     /**
      * Sets the cursor based on the given X and Y positions.
      * 
-     * @param x the new x position of the cursor
-     * @param y the new y position of the cursor
+     * @param x the new x position of the cursor (0-based)
+     * @param y the new y position of the cursor (0-based)
      */
     public void setCursor(int x, int y) {
-        this.writer().print(ansi().cursor(y, x));
+        this.writer().print(ansi().cursor(y + 1, x + 1));
         this.writer().flush();
     }
 
@@ -218,7 +218,7 @@ public class TerminalApp {
      * Sets the cursor based on the give Y position, moving the cursor to the
      * given line at column 0.
      * 
-     * @param y the new y position of the cursor
+     * @param y the new y position of the cursor (0-based)
      */
     public void setCursor(int y) {
         this.setCursor(0, y);
@@ -227,10 +227,10 @@ public class TerminalApp {
     /**
      * Sets the cursor column position on the current line
      * 
-     * @param x the new column position of the cursor
+     * @param x the new column position of the cursor (0-based)
      */
     public void setCursorX(int x) {
-        this.writer().print(ansi().cursorToColumn(x));
+        this.writer().print(ansi().cursorToColumn(x + 1));
         this.writer().flush();
     }
 
@@ -249,7 +249,7 @@ public class TerminalApp {
     private void writeTitle() {
         PrintWriter writer = this.writer();
 
-        this.setCursor(1);
+        this.setCursor(0);
         this.clearLine();
         writer.println(ansi().bold()
                 .fgRed()
@@ -257,7 +257,7 @@ public class TerminalApp {
                 .a(this.status.isBlank() ? "" : " - " + this.status)
                 .reset());
 
-        this.setCursor(2);
+        this.setCursor(1);
         this.clearLine();
         writer.println(ansi().bold()
                 .fgRed()
