@@ -10,7 +10,7 @@ import java.util.function.Consumer;
  * This class is responsible for running a process and allowing easy access to
  * it's output.
  */
-public class ProcessRunner {
+public class ProcessBuilderRunner {
 
     /**
      * The process that this runner launched
@@ -37,14 +37,14 @@ public class ProcessRunner {
      * @param errorHandler the error line output handler
      * @throws IOException if there was an error starting the process
      */
-    public ProcessRunner(ProcessBuilder pb, Consumer<String> outputHandler,
+    public ProcessBuilderRunner(ProcessBuilder pb, Consumer<String> outputHandler,
             Consumer<String> errorHandler) throws IOException {
         this.process = pb.start();
 
-        this.outputReader = ProcessRunner.consumeStream(this.process
+        this.outputReader = ProcessBuilderRunner.consumeStream(this.process
                 .getInputStream(), outputHandler == null ? (l) -> {}
                         : outputHandler);
-        this.errorReader = ProcessRunner.consumeStream(this.process
+        this.errorReader = ProcessBuilderRunner.consumeStream(this.process
                 .getErrorStream(), errorHandler == null ? (l) -> {}
                         : errorHandler);
 
