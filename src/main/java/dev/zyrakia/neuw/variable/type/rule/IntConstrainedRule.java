@@ -42,7 +42,8 @@ public class IntConstrainedRule implements VariableTypeRule<Integer> {
 
 	@Override
 	public String toString() {
-		return "IntConstrainedRule<min = " + this.min + ", max = " + this.max + ">";
+		return "IntConstrainedRule<min = " + this.min + ", max = " + this.max
+				+ ">";
 	}
 
 }

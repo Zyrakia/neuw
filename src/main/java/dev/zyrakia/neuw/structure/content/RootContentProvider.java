@@ -34,8 +34,7 @@ public class RootContentProvider implements ContentProvider {
     @Override
     public String evaluate(Path path) throws UnmatchedPathException {
         Path absPath = this.rootPath.resolve(path);
-        if (!absPath.toFile().isFile())
-            throw new UnmatchedPathException(path);
+        if (!absPath.toFile().isFile()) throw new UnmatchedPathException(path);
 
         try {
             return Files.readString(absPath);

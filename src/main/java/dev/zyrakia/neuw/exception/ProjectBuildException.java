@@ -22,7 +22,8 @@ public class ProjectBuildException extends Exception {
 	 * @return the new project build exception
 	 */
 	public static ProjectBuildException wrap(Exception e) {
-		return new ProjectBuildException("An error occurred during project building:\n" + e.getMessage());
+		return new ProjectBuildException("An error occurred during project building:\n"
+				+ e.getMessage());
 	}
 
 }

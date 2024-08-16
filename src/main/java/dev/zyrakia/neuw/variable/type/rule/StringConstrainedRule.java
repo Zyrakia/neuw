@@ -1,7 +1,8 @@
 package dev.zyrakia.neuw.variable.type.rule;
 
 /**
- * This rule passes strings that are of a given length, constrained with a minimum and maximum length.
+ * This rule passes strings that are of a given length, constrained with a
+ * minimum and maximum length.
  */
 public class StringConstrainedRule implements VariableTypeRule<String> {
 
@@ -43,7 +44,8 @@ public class StringConstrainedRule implements VariableTypeRule<String> {
 
 	@Override
 	public String toString() {
-		return "StringConstrainedRule<min = " + this.min + ", max = " + this.max + ">";
+		return "StringConstrainedRule<min = " + this.min + ", max = " + this.max
+				+ ">";
 	}
 
 }

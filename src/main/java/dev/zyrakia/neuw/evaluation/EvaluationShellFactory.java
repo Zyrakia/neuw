@@ -12,7 +12,7 @@ public interface EvaluationShellFactory {
 	 * Creates a new evaluation shell with the given variables.
 	 *
 	 * @param variables the variables that should be available to expression
-	 *                  evaluated by this shell
+	 * evaluated by this shell
 	 * @return the created shell
 	 */
 	EvaluationShell make(Map<String, Object> variables);

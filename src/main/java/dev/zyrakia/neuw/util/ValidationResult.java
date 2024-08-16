@@ -11,9 +11,7 @@ import dev.zyrakia.neuw.exception.ValidationException;
 public record ValidationResult(boolean isValid, String message) {
 
     public void assertIsValid() throws ValidationException {
-        if (this.isValid)
-            return;
-
+        if (this.isValid) return;
         throw new ValidationException(this.message);
     }
 

@@ -1,7 +1,8 @@
 package dev.zyrakia.neuw.evaluation;
 
 /**
- * Represents a shell that can evaluate an arbitrary expressions within templates.
+ * Represents a shell that can evaluate an arbitrary expressions within
+ * templates.
  */
 public interface EvaluationShell {
 

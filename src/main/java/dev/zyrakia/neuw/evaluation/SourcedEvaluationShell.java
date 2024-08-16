@@ -1,7 +1,8 @@
 package dev.zyrakia.neuw.evaluation;
 
 /**
- * Represents an {@link EvaluationShell} that allows for source attachment to expressions.
+ * Represents an {@link EvaluationShell} that allows for source attachment to
+ * expressions.
  */
 public interface SourcedEvaluationShell extends EvaluationShell {
 
@@ -20,7 +21,7 @@ public interface SourcedEvaluationShell extends EvaluationShell {
 	 * Evaluates the given expression with the given source.
 	 *
 	 * @param expression the expression to evaluate
-	 * @param source     the source of the expression
+	 * @param source the source of the expression
 	 * @return the result of the evaluation
 	 */
 	Object evaluate(String expression, String source);

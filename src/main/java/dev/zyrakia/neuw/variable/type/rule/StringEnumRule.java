@@ -11,11 +11,12 @@ public class StringEnumRule extends StringPatternRule {
 	 * Creates a new enum rule with the given enum items.
 	 *
 	 * @param caseSensitive whether the validation is case-sensitive
-	 * @param enumItems     the items to validate input against
+	 * @param enumItems the items to validate input against
 	 */
 	public StringEnumRule(boolean caseSensitive, String... enumItems) {
-		super(caseSensitive ? Pattern.compile(buildPatternText(enumItems)) : Pattern.compile(
-				buildPatternText(enumItems), Pattern.CASE_INSENSITIVE));
+		super(caseSensitive ? Pattern.compile(buildPatternText(enumItems))
+				: Pattern
+						.compile(buildPatternText(enumItems), Pattern.CASE_INSENSITIVE));
 	}
 
 	/**

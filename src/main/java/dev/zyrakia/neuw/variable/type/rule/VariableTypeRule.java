@@ -1,7 +1,8 @@
 package dev.zyrakia.neuw.variable.type.rule;
 
 /**
- * Represents a rule that expands the criteria that a value must pass to match a variable type.
+ * Represents a rule that expands the criteria that a value must pass to match a
+ * variable type.
  *
  * @param <T> the type of value this rule validates
  */
@@ -16,7 +17,8 @@ public interface VariableTypeRule<T> {
 	boolean validate(T value);
 
 	/**
-	 * Returns a representation of this rule that describes how this rule validates input.
+	 * Returns a representation of this rule that describes how this rule
+	 * validates input.
 	 *
 	 * @return the string representation of this rule
 	 */

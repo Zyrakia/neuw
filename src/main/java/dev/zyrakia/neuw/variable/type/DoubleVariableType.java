@@ -7,6 +7,7 @@ import dev.zyrakia.neuw.exception.VariableFormatException;
  */
 public class DoubleVariableType extends VariableType<Double> {
 
+    @Override
     public Double parse(String value) throws VariableFormatException {
         try {
             return Double.parseDouble(value.trim());

@@ -15,7 +15,8 @@ public interface ContentProvider {
 	 *
 	 * @param path the path to evaluate
 	 * @return the content at the path
-	 * @throws UnmatchedPathException if the given path cannot be matched to content
+	 * @throws UnmatchedPathException if the given path cannot be matched to
+	 * content
 	 */
 	public String evaluate(Path path) throws UnmatchedPathException;
 

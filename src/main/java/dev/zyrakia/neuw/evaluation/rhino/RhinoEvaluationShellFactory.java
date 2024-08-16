@@ -8,18 +8,17 @@ import java.util.Map;
 
 /**
  * This is a factory for the {@link RhinoEvaluationShell}. It will create a
- * secure scope which does not allow accessing
- * anything of the host application unless it is provided.
+ * secure scope which does not allow accessing anything of the host application
+ * unless it is provided.
  */
 public class RhinoEvaluationShellFactory implements EvaluationShellFactory {
 
 	/**
-	 * Creates a new {@link RhinoEvaluationShell} with the given variables available
-	 * to expressions evaluated with the
-	 * resulting shell.
+	 * Creates a new {@link RhinoEvaluationShell} with the given variables
+	 * available to expressions evaluated with the resulting shell.
 	 *
 	 * @param variables the variables that should be available to expression
-	 *                  evaluated by this shell
+	 * evaluated by this shell
 	 * @return the created shell
 	 */
 	@Override
@@ -27,7 +26,8 @@ public class RhinoEvaluationShellFactory implements EvaluationShellFactory {
 		Context cx = Context.enter();
 
 		ScriptableObject scope = cx.initSafeStandardObjects(null, true);
-		variables.forEach((key, value) -> ScriptableObject.putConstProperty(scope, key, value));
+		variables.forEach((key, value) -> ScriptableObject
+				.putConstProperty(scope, key, value));
 
 		scope.sealObject();
 		cx.close();

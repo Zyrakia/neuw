@@ -34,7 +34,8 @@ public class RhinoEvaluationShell implements SourcedEvaluationShell {
 			expressionScope.setPrototype(this.sharedScope);
 			expressionScope.setParentScope(null);
 
-			return cx.evaluateString(expressionScope, expression, source, 0, null);
+			return cx
+					.evaluateString(expressionScope, expression, source, 0, null);
 		}
 	}
 

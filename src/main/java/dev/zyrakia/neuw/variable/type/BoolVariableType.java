@@ -13,12 +13,14 @@ public class BoolVariableType extends VariableType<Boolean> {
     /**
      * The default words that will parse into a true value.
      */
-    public static final List<String> DEFAULT_TRUE_WORDS = List.of("true", "yes", "y");
+    public static final List<String> DEFAULT_TRUE_WORDS = List
+            .of("true", "yes", "y");
 
     /**
      * The default words that will parse into a false value.
      */
-    public static final List<String> DEFAULT_FALSE_WORDS = List.of("false", "no", "n");
+    public static final List<String> DEFAULT_FALSE_WORDS = List
+            .of("false", "no", "n");
 
     /**
      * Whether the parsing is case-sensitive.
@@ -38,18 +40,24 @@ public class BoolVariableType extends VariableType<Boolean> {
     /**
      * Creates a new boolean parser with the given true and false words.
      *
-     * @param trueWords     the words that parse as {@code true}
-     * @param falseWords    the words that parse as {@code false}
-     * @param caseSensitive whether to take case into consideration while parsing
+     * @param trueWords the words that parse as {@code true}
+     * @param falseWords the words that parse as {@code false}
+     * @param caseSensitive whether to take case into consideration while
+     * parsing
      */
-    public BoolVariableType(List<String> trueWords, List<String> falseWords, boolean caseSensitive) {
+    public BoolVariableType(List<String> trueWords, List<String> falseWords,
+            boolean caseSensitive) {
         this.trueWords = trueWords;
         this.falseWords = falseWords;
         this.caseSensitive = caseSensitive;
 
         if (!caseSensitive) {
-            this.trueWords = this.trueWords.stream().map(String::toLowerCase).collect(Collectors.toList());
-            this.falseWords = this.falseWords.stream().map(String::toLowerCase).collect(Collectors.toList());
+            this.trueWords = this.trueWords.stream()
+                    .map(String::toLowerCase)
+                    .collect(Collectors.toList());
+            this.falseWords = this.falseWords.stream()
+                    .map(String::toLowerCase)
+                    .collect(Collectors.toList());
         }
     }
 
@@ -61,15 +69,13 @@ public class BoolVariableType extends VariableType<Boolean> {
         this(DEFAULT_TRUE_WORDS, DEFAULT_FALSE_WORDS, false);
     }
 
+    @Override
     public Boolean parse(String value) {
-        if (!this.caseSensitive)
-            value = value.toLowerCase();
+        if (!this.caseSensitive) value = value.toLowerCase();
         value = value.trim();
 
-        if (this.trueWords.contains(value))
-            return true;
-        else if (this.falseWords.contains(value))
-            return false;
+        if (this.trueWords.contains(value)) return true;
+        else if (this.falseWords.contains(value)) return false;
 
         throw VariableFormatException.forExpectedType(value, Boolean.class);
     }
@@ -84,17 +90,13 @@ public class BoolVariableType extends VariableType<Boolean> {
      * 
      * @return the true words list
      */
-    public List<String> getTrueWords() {
-        return this.trueWords;
-    }
+    public List<String> getTrueWords() { return this.trueWords; }
 
     /**
      * Returns the currently accepted list of false words.
      * 
      * @return the false words list
      */
-    public List<String> getFalseWords() {
-        return this.falseWords;
-    }
+    public List<String> getFalseWords() { return this.falseWords; }
 
 }

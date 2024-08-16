@@ -7,6 +7,7 @@ import dev.zyrakia.neuw.exception.VariableFormatException;
  */
 public class IntVariableType extends VariableType<Integer> {
 
+    @Override
     public Integer parse(String value) throws VariableFormatException {
         try {
             return Integer.parseInt(value.trim());

@@ -37,8 +37,9 @@ public class ProcessBuilderRunner {
      * @param errorHandler the error line output handler
      * @throws IOException if there was an error starting the process
      */
-    public ProcessBuilderRunner(ProcessBuilder pb, Consumer<String> outputHandler,
-            Consumer<String> errorHandler) throws IOException {
+    public ProcessBuilderRunner(ProcessBuilder pb,
+            Consumer<String> outputHandler, Consumer<String> errorHandler)
+            throws IOException {
         this.process = pb.start();
 
         this.outputReader = ProcessBuilderRunner.consumeStream(this.process

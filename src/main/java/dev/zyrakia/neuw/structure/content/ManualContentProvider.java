@@ -19,7 +19,7 @@ public class ManualContentProvider implements ContentProvider {
 	/**
 	 * Sets the given content at the given path.
 	 *
-	 * @param path    the path to set the content at
+	 * @param path the path to set the content at
 	 * @param content the content to set
 	 */
 	public void set(Path path, String content) {
@@ -38,8 +38,7 @@ public class ManualContentProvider implements ContentProvider {
 	@Override
 	public String evaluate(Path path) throws UnmatchedPathException {
 		for (Map.Entry<Path, String> entry : this.contentTable.entrySet()) {
-			if (entry.getKey().equals(path))
-				return entry.getValue();
+			if (entry.getKey().equals(path)) return entry.getValue();
 		}
 
 		throw new UnmatchedPathException(path);
