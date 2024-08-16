@@ -129,7 +129,7 @@ public class TerminalApp {
                 .a("│ [")
                 .a(e.getClass().getSimpleName())
                 .a("] ")
-                .a(e.getMessage())
+                .a(e.getMessage().replaceAll("\n", "\n│ "))
                 .reset());
         writer.println(ansi().bold().fg(Color.RED).a("└").reset().newline());
         this.writer().flush();
