@@ -22,7 +22,7 @@ public class RhinoEvaluationShellFactory implements EvaluationShellFactory {
 	 * @return the created shell
 	 */
 	@Override
-	public RhinoEvaluationShell make(Map<String, Object> variables) {
+	public RhinoEvaluationShell createShell(Map<String, Object> variables) {
 		Context cx = Context.enter();
 
 		ScriptableObject scope = cx.initSafeStandardObjects(null, true);

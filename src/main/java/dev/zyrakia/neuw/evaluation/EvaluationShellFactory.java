@@ -15,15 +15,15 @@ public interface EvaluationShellFactory {
 	 * evaluated by this shell
 	 * @return the created shell
 	 */
-	EvaluationShell make(Map<String, Object> variables);
+	EvaluationShell createShell(Map<String, Object> variables);
 
 	/**
 	 * Creates a new evaluation shell.
 	 *
 	 * @return the created shell
 	 */
-	default EvaluationShell make() {
-		return make(Collections.emptyMap());
+	default EvaluationShell createShell() {
+		return createShell(Collections.emptyMap());
 	}
 
 }
