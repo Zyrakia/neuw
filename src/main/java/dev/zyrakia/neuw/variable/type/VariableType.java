@@ -25,7 +25,7 @@ public abstract class VariableType<T> {
      * @param value the string value to parse
      * @return the parsed value
      * @throws VariableFormatException if the given value cannot be parsed into
-     *                                 {@link T}
+     * {@link T}
      */
     public abstract T parse(String value) throws VariableFormatException;
 
@@ -49,9 +49,9 @@ public abstract class VariableType<T> {
             T castedValue = this.cast(value);
             return this.validateRules(castedValue);
         } catch (ClassCastException e) {
-            return ValidationResult.fail(
-                    "The given value \"" + value + "\" could not be cast into the variable type \""
-                            + this.getClass().getName() + ".\"");
+            return ValidationResult.fail("The given value \"" + value
+                    + "\" could not be cast into the variable type \""
+                    + this.getClass().getName() + ".\"");
         }
     }
 
@@ -63,10 +63,10 @@ public abstract class VariableType<T> {
      */
     private ValidationResult validateRules(T value) {
         for (VariableTypeRule<T> rule : this.rules) {
-            if (rule.validate(value))
-                continue;
+            if (rule.validate(value)) continue;
 
-            return ValidationResult.fail("The value \"" + value + "\" did not follow the rule \"" + rule + ".\"");
+            return ValidationResult.fail("The value \"" + value
+                    + "\" did not follow the rule \"" + rule + ".\"");
         }
 
         return ValidationResult.ok();

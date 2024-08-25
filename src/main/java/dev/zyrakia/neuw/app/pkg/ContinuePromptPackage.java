@@ -134,7 +134,7 @@ public class ContinuePromptPackage implements TerminalPackage<Object> {
     }
 
     @Override
-    public Object execute(TerminalApp app) {
+    public Void execute(TerminalApp app) {
         WaitingLine line = new WaitingLine(app);
         Thread animThread = new Thread(line);
         animThread.start();
