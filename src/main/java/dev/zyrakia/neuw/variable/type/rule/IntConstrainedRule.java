@@ -42,8 +42,8 @@ public class IntConstrainedRule implements VariableTypeRule<Integer> {
 
 	@Override
 	public String toString() {
-		return "IntConstrainedRule<min = " + this.min + ", max = " + this.max
-				+ ">";
+		return "an integer between " + this.min + " and "
+				+ this.max;
 	}
 
 }

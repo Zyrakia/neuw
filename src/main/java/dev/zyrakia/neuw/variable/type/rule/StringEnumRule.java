@@ -8,6 +8,16 @@ import java.util.regex.Pattern;
 public class StringEnumRule extends StringPatternRule {
 
 	/**
+	 * A reference to the enum items that this rule validates against.
+	 */
+	private final String[] enumItems;
+
+	/**
+	 * Whether the validation is case-sensitive.
+	 */
+	private final boolean caseSensitive;
+
+	/**
 	 * Creates a new enum rule with the given enum items.
 	 *
 	 * @param caseSensitive whether the validation is case-sensitive
@@ -17,6 +27,9 @@ public class StringEnumRule extends StringPatternRule {
 		super(caseSensitive ? Pattern.compile(buildPatternText(enumItems))
 				: Pattern
 						.compile(buildPatternText(enumItems), Pattern.CASE_INSENSITIVE));
+
+		this.caseSensitive = caseSensitive;
+		this.enumItems = enumItems;
 	}
 
 	/**
@@ -28,6 +41,14 @@ public class StringEnumRule extends StringPatternRule {
 		this(false, enumItems);
 	}
 
+	/**
+	 * Creates a regular expression that matches any of the given enum items.
+	 * This does not account for the enum items containig regex special
+	 * characters.
+	 * 
+	 * @param enumItems the items to add to the expression
+	 * @return the regular expression
+	 */
 	private static String buildPatternText(String... enumItems) {
 		StringBuilder patternText = new StringBuilder();
 
@@ -40,6 +61,13 @@ public class StringEnumRule extends StringPatternRule {
 		patternText.append(")$");
 
 		return patternText.toString();
+	}
+
+	@Override
+	public String toString() {
+		return "a string equal to any of the following " + "(case "
+				+ (this.caseSensitive ? "" : "in") + "sensitive)" + ": "
+				+ String.join(", ", this.enumItems);
 	}
 
 }

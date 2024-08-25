@@ -44,8 +44,8 @@ public class StringConstrainedRule implements VariableTypeRule<String> {
 
 	@Override
 	public String toString() {
-		return "StringConstrainedRule<min = " + this.min + ", max = " + this.max
-				+ ">";
+		return "a string with a length between " + this.min + " and "
+				+ this.max;
 	}
 
 }

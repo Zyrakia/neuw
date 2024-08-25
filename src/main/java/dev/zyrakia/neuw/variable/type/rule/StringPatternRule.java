@@ -28,7 +28,8 @@ public class StringPatternRule implements VariableTypeRule<String> {
 
 	@Override
 	public String toString() {
-		return "StringPatternRule<\"" + this.pattern.toString() + "\">";
+		return "a string matching the pattern \"" + this.pattern.pattern()
+				+ "\"";
 	}
 
 }
