@@ -2,6 +2,8 @@ package dev.zyrakia.neuw.variable.type.rule;
 
 import java.util.regex.Pattern;
 
+import dev.zyrakia.neuw.construction.PropertyCreatable;
+
 /**
  * This rule passes strings that match a certain regular expression pattern.
  */
@@ -17,6 +19,7 @@ public class StringPatternRule implements VariableTypeRule<String> {
 	 *
 	 * @param pattern the pattern to validate input against
 	 */
+	@PropertyCreatable({ "pattern" })
 	public StringPatternRule(Pattern pattern) {
 		this.pattern = pattern;
 	}
