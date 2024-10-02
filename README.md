@@ -2,7 +2,7 @@
 <h1>Neuw</h1>
 
 Neuw is an in-development project bootstrapper that utilizes dynamic templates with embedded scripts to generate a
-file and folder structure to hit the ground running with in a new project.
+file and folder structure that enables you to hit the ground running and skip the hassle when starting a new project.
 
 ## So, what's in development?
 
