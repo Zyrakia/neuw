@@ -48,8 +48,11 @@ public class ContentEvaluator {
 
 		if (expressionMatcher.find()) {
 			return expressionMatcher.replaceAll((match) -> {
+				String expression = match.groupCount() > 0
+						? match.group(1)
+						: match.group();
 				Object expressionResult = this
-						.evaluateExpression(match.group(), source);
+						.evaluateExpression(expression, source);
 				if (expressionResult == null) return "";
 
 				return expressionResult.toString();
