@@ -89,7 +89,7 @@ public class ProcessBuilderFactory {
             cmds.add("cmd.exe");
             cmds.add("/c");
         } else if (OSUtils.IS_LINUX) {
-            cmds.add("bin.sh");
+            cmds.add("/bin/sh");
             cmds.add("-c");
         }
 
