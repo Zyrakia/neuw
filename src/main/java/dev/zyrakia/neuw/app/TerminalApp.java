@@ -172,9 +172,10 @@ public class TerminalApp {
         if (this.altMode)
             throw new IllegalStateException("An alternate request was made before the previous one exited.");
 
-        int savedLine = this.getCursor().getY();
-
+        // Alternate screen buffer (ca_mode) automatically saves and restores
+        // the main buffer's cursor position, so no manual tracking needed.
         this.terminal.puts(enter_ca_mode);
+        this.terminal.flush();
         this.altMode = true;
 
         String storedStatus = this.status;
@@ -185,12 +186,11 @@ public class TerminalApp {
             return pkg.execute(this);
         } finally {
             this.terminal.puts(exit_ca_mode);
+            this.terminal.flush();
             this.altMode = false;
 
             this.status = storedStatus;
             this.writeTitle();
-
-            this.setCursor(savedLine);
         }
     }
 
