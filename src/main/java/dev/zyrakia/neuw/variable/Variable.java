@@ -67,7 +67,7 @@ public record Variable<T>(String identifier, String name, String description,
 
         /**
          * Sets the description, which will mostly be user facing, and should be
-         * a concise description of the indented or implemented use of the
+         * a concise description of the intended use of the
          * variable.
          * 
          * @param description the description of the variable

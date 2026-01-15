@@ -11,7 +11,7 @@ public record Creatable<T>(Constructor<T> constructor, Object[] arguments) {
 
     /**
      * Uses the underlying arguments to invoke the constructor and create a new
-     * instannce.
+     * instance.
      * 
      * @return the created instance
      * @see Constructor#newInstance(Object...)
