@@ -47,7 +47,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>dev.zyrakia.neuw.Main</mainClass>
+							<mainClass>dev.zyrakia.Neuw</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>
